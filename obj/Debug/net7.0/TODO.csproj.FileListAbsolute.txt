@@ -1,0 +1,15 @@
+C:\Users\MONSTER\GitProject\TODO\bin\Debug\net7.0\TODO.exe
+C:\Users\MONSTER\GitProject\TODO\bin\Debug\net7.0\TODO.deps.json
+C:\Users\MONSTER\GitProject\TODO\bin\Debug\net7.0\TODO.runtimeconfig.json
+C:\Users\MONSTER\GitProject\TODO\bin\Debug\net7.0\TODO.dll
+C:\Users\MONSTER\GitProject\TODO\bin\Debug\net7.0\TODO.pdb
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.csproj.AssemblyReference.cache
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.AssemblyInfoInputs.cache
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.AssemblyInfo.cs
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.csproj.CoreCompileInputs.cache
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.dll
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\refint\TODO.dll
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.pdb
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\TODO.genruntimeconfig.cache
+C:\Users\MONSTER\GitProject\TODO\obj\Debug\net7.0\ref\TODO.dll
