@@ -60,6 +60,7 @@ namespace todo
                                 }
                             }
                             if(kisiOK==false){
+                                Console.WriteLine("Hatalı kisi secildi.Personel bulunamadı!");
                                 goto kk2;
                             }
                             kart.KartEkle(b,i,k,(Size)ss2);
@@ -71,13 +72,14 @@ namespace todo
                             string entry=Console.ReadLine();
 
                             kart.RemoveCard(entry);
+
                             if(!kart.KartSilindimi()){
                                 tekrar:
                                 Console.WriteLine("Aradığınız krtiterlere uygun kart board'da bulunamadı. Lütfen bir seçim yapınız.");
                                 Console.WriteLine("Silmeyi sonlandırmak için : (1)");
                                 Console.WriteLine("Yeniden denemek için : (2)");
-                                int del_selection=Convert.ToInt32(Console.ReadLine().ToString());
-                                if(del_selection!=1 || del_selection!=2){
+                                int del_selection=Convert.ToInt32(Console.ReadLine());
+                                if(del_selection<1 && del_selection>2){//del_selection!=1 || del_selection!=2
                                     goto tekrar;
                                 }else{
                                     if(del_selection==1){
@@ -87,6 +89,8 @@ namespace todo
                                         goto sil;
                                     }
                                 }
+                            }else{
+                                kart.KartListele(personelInfo);
                             }
 
                         break;
@@ -101,8 +105,8 @@ namespace todo
                                 Console.WriteLine("Aradığınız krtiterlere uygun kart board'da bulunamadı. Lütfen bir seçim yapınız.");
                                 Console.WriteLine("Silmeyi sonlandırmak için : (1)");
                                 Console.WriteLine("Yeniden denemek için : (2)");
-                                int upd_selection=Convert.ToInt32(Console.ReadLine().ToString());
-                                if(upd_selection!=1 || upd_selection!=2){
+                                int upd_selection=Convert.ToInt32(Console.ReadLine());
+                                if(upd_selection<1 && upd_selection>2){//upd_selection!=1 || upd_selection!=2
                                     goto tekrar2;
                                 }else{
                                     if(upd_selection==1){
@@ -124,8 +128,8 @@ namespace todo
                                 kart.BulByHeader(moveHeader).grup());
                                 tekrar3:
                                 Console.WriteLine("Lütfen taşımak istediğiniz Line'ı seçiniz: (1) TODO (2) IN PROGRESS (3) DONE");
-                                int line_ndx=Convert.ToInt32(Console.ReadLine().ToString());
-                                if(line_ndx!=1 || line_ndx!=2 ||line_ndx!=3){
+                                int line_ndx=Convert.ToInt32(Console.ReadLine());
+                                if(line_ndx<1 && line_ndx>3){
                                     goto tekrar3;
                                 }else{
                                     
@@ -141,6 +145,10 @@ namespace todo
 
             }catch(ArgumentException e ){
                 Console.WriteLine("Hatalı giriş !"+e.Message.ToString());
+                goto first;
+            }catch(FormatException f){
+                Console.WriteLine("Hatalı FORMAT !"+f.Message.ToString());
+                goto first;
             }
             
         }
@@ -153,7 +161,7 @@ namespace todo
         private Size size;
         private Line line;
         private int ID;
-        
+        int unq=0;
 
         public string baslık(){
             return this.Header;
@@ -174,6 +182,12 @@ namespace todo
             return this.ID;
         }
 
+        
+        int UniqueID(){
+            unq++;
+            return unq;
+        }
+
         public void UpdateLine(int hat){//Line hat
             if(hat==1){
                 this.line=Line.TODO;
@@ -192,7 +206,7 @@ namespace todo
             this.Personel=persID;
             this.size=boyut;
             this.line=Line.TODO;
-            this.ID++;
+            this.ID=UniqueID();
         }
 
         public Board(Line hat){ // override , güncelleme yapar LINE üzerinde
@@ -237,11 +251,21 @@ namespace todo
 
         public void RemoveCard(string entry){
             deletedCard=false;
+            int indexCounter=0;
+            List<int> willBeDelete=new List<int>();
             foreach(var x in kart){
                 if(x.baslık()==entry){
-                    kart.Remove(x);
+                    //kart.Remove(x);
+                    willBeDelete.Add(indexCounter);
+                    Console.WriteLine("Silinecek index:"+indexCounter+"//"+x.CardID());
                     deletedCard=true;
                 }
+                indexCounter++;
+            }
+
+            foreach(var ndx in willBeDelete){
+                kart.RemoveAt(ndx);
+               // kart.remo
             }
         }
 
@@ -269,49 +293,88 @@ namespace todo
                     counter2++;
                 }
                 if(v.grup()==Line.DONE){
-                    re_kart1.Add(v);
+                    re_kart3.Add(v);
                     counter3++;
                 }
                 
-            }
+                }
 
             Console.WriteLine("TODO Line");
             Console.WriteLine("************************");
-            foreach(var a in re_kart1){               
+            if(re_kart1.Count==0){
+                Console.WriteLine(" ~ BOŞ ~");
+                Console.WriteLine("");
+            }else{
+                foreach(var a in re_kart1){               
                     
                     Console.WriteLine("Başlık:{0}",a.baslık());
                     Console.WriteLine("İçerik:{0}",a.icerik());
                     Console.WriteLine("Atanan Kişi:{0}",personelBilgileri.PersonelCagir(a.personel()).GetName());
                     Console.WriteLine("Büyüklük:{0}",a.büyüklük());
-                    counter1++;
-            }
+                    Console.WriteLine("-");
+                    Console.WriteLine("");
+                    
+                }
 
+            }
+            
             Console.WriteLine("INPROGRESS Line");
             Console.WriteLine("************************");
-            foreach(var b in re_kart2){   
+             if(re_kart2.Count==0){
+                Console.WriteLine(" ~ BOŞ ~");
+                Console.WriteLine("");
+            }else{
+                foreach(var b in re_kart2){   
                 
                     
                     Console.WriteLine("Başlık:{0}",b.baslık());
                     Console.WriteLine("İçerik:{0}",b.icerik());
                     Console.WriteLine("Atanan Kişi:{0}",personelBilgileri.PersonelCagir(b.personel()).GetName());
                     Console.WriteLine("Büyüklük:{0}",b.büyüklük());
+                    Console.WriteLine("-");
+                    Console.WriteLine("");
                 }
+            }
+            
 
             Console.WriteLine("DONE Line");
             Console.WriteLine("************************");
-            foreach(var c in re_kart3){  
-                    
-                    Console.WriteLine("Başlık:{0}",c.baslık());
-                    Console.WriteLine("İçerik:{0}",c.icerik());
-                    Console.WriteLine("Atanan Kişi:{0}",personelBilgileri.PersonelCagir(c.personel()).GetName());
-                    Console.WriteLine("Büyüklük:{0}",c.büyüklük());
-                }
+             if(re_kart3.Count==0){
+                Console.WriteLine(" ~ BOŞ ~");
+                Console.WriteLine("");
+                }else{
+                    foreach(var c in re_kart3){  
+                        
+                        Console.WriteLine("Başlık:{0}",c.baslık());
+                        Console.WriteLine("İçerik:{0}",c.icerik());
+                        Console.WriteLine("Atanan Kişi:{0}",personelBilgileri.PersonelCagir(c.personel()).GetName());
+                        Console.WriteLine("Büyüklük:{0}",c.büyüklük());
+                        Console.WriteLine("-");
+                        Console.WriteLine("");
+                    }   
                 
-            }
+                
+                    }
         }
     
 
-    class Personeller{
+    
+   
+
+    }
+
+     class PersoInfo{
+        public static List<Personeller> per=new List<Personeller>();
+            public void PersoEkle(int id,string name){
+                per.Add(new Personeller(id,name));
+            }
+
+            public Personeller PersonelCagir(int id){
+                return per.Find(x=>x.GetID()==id);
+            }
+        }
+
+        class Personeller{
         private int ID;
         private string Name;
         //private string Surname;
@@ -335,16 +398,4 @@ namespace todo
 
     }
 
-    class PersoInfo{
-        public static List<Personeller> per=new List<Personeller>();
-        public void PersoEkle(int id,string name){
-            per.Add(new Personeller(id,name));
-        }
-
-        public Personeller PersonelCagir(int id){
-            return per.Find(x=>x.GetID()==id);
-        }
-    }
-
-    
 }
